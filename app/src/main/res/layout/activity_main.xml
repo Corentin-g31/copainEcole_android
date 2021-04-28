@@ -42,7 +42,10 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="30dp"
+
+
         android:onClick="onBtnRegisterClick"
+
         android:text="M'inscrire" />
 
     <LinearLayout
@@ -76,7 +79,8 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/legendGroup"
+
+            android:id="@+id/legendPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -85,7 +89,8 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/txtGroup"
+
+            android:id="@+id/txtPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
@@ -103,7 +108,10 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="15dp"
+
+
         android:onClick="onBtnLoginClick"
+
         android:text="Me connecter" />
 
 </LinearLayout>
