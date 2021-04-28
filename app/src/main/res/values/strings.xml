@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">app_copains_ecole</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
