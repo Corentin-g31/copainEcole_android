@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var txtPseudo: EditText
     lateinit var txtPassword: EditText
 
-import android.view.View
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,15 +42,15 @@ import android.view.View
         when (v) {
             btnRegister -> {
                 Log.i("tag_i", "onClick: btnRegister")
-//                startActivity(Intent(this, RegisterActivity::class.java))
+                startActivity(Intent(this, RegisterActivity::class.java))
             }
             btnFind -> {
                 Log.i("tag_i", "onClick: btnFind")
-//                startActivity(Intent(this, MapsActivity::class.java))
+                startActivity(Intent(this, MapsActivity::class.java))
             }
             btnLogin -> {
                 Log.i("tag_i", "onClick: btnLogin")
-//                val intent = Intent(this, MapsActivity::class.java)
+                val intent = Intent(this, MapsActivity::class.java)
                 val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
 
                 // ProgressBar le temps du login
@@ -62,8 +60,8 @@ import android.view.View
                 thread {
                     try {
                         val loginUser = WsUtils.login(user)
-//                        intent.putExtra("user_id", "$loginUser")
-//                        startActivity(intent)
+                        intent.putExtra("user_id", "$loginUser")
+                        startActivity(intent)
                         println(loginUser)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -100,17 +98,4 @@ import android.view.View
     private fun showLoadingScreen(visible: Boolean) = runOnUiThread {
 //        loadingScreen.visibility = if (visible) View.VISIBLE else View.GONE
     }
-
-
-
-    fun onBtnRegisterClick(view: View) {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun onBtnLoginClick(view: View) {
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
-    }
-
 }
