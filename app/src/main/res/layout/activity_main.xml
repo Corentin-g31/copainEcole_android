@@ -42,10 +42,6 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="30dp"
-
-
-        android:onClick="onBtnRegisterClick"
-
         android:text="M'inscrire" />
 
     <LinearLayout
@@ -108,10 +104,6 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="15dp"
-
-
-        android:onClick="onBtnLoginClick"
-
         android:text="Me connecter" />
 
 </LinearLayout>
