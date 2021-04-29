@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
 import com.example.app_copains_ecole.model.UserBean
 import com.example.app_copains_ecole.utils.WsUtils
 import kotlin.concurrent.thread
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var btnLogin: Button
     lateinit var txtPseudo: EditText
     lateinit var txtPassword: EditText
+    lateinit var progressBar: ProgressBar
+    lateinit var tvError: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +35,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btnLogin = findViewById(R.id.btnLogin)
         txtPseudo = findViewById(R.id.txtPseudo)
         txtPassword = findViewById(R.id.txtPassword)
+        tvError = findViewById(R.id.tvError)
+        progressBar = findViewById(R.id.progressBar)
 
         // Event listener on btn
         btnRegister.setOnClickListener(this)
         btnFind.setOnClickListener(this)
         btnLogin.setOnClickListener(this)
+
+        // ProgressBar init a false + errorTv a gone + ""
+        showProgressBar(false)
+        setErrorOnUiThread("")
     }
 
     override fun onClick(v: View?) {
@@ -43,6 +53,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             btnRegister -> {
                 Log.i("tag_i", "onClick: btnRegister")
                 startActivity(Intent(this, RegisterActivity::class.java))
+                val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
+
             }
             btnFind -> {
                 Log.i("tag_i", "onClick: btnFind")
@@ -54,7 +66,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
 
                 // ProgressBar le temps du login
-                showLoadingScreen(true)
+                showProgressBar(true)
 
                 // Lance un thread pour ne pas bloquer le thread graphique
                 thread {
@@ -62,7 +74,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         val loginUser = WsUtils.login(user)
                         intent.putExtra("user_id", "$loginUser")
                         startActivity(intent)
-                        println(loginUser)
+                        println("ok" + loginUser)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Log.w("tag_w", "${e.message}")
@@ -79,23 +91,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // Méthode de mise à jour de l'ihm
     /* -------------------------------- */
 
-    private fun setErrorOnUiThread(text: String?) = runOnUiThread {
+    fun setErrorOnUiThread(text: String?) = runOnUiThread {
         if (text.isNullOrBlank()) {
-//            tvLoading.text = resources.getString(R.string.tvLoadingTxt)
-//            tvLoading.setBackgroundColor(Color.WHITE)
-//            tvLoading.setTextColor(Color.BLACK)
-//            showLoadingScreen(true)
+            tvError.visibility = View.GONE
         } else {
-//            weatherDatas.visibility = View.GONE
-//            showLoadingScreen(true)
-//            progressBar.visibility = View.INVISIBLE
-//            tvLoading.setBackgroundColor(Color.RED)
-//            tvLoading.setTextColor(Color.WHITE)
-//            tvLoading.text = text
+            tvError.visibility = View.VISIBLE
         }
+        tvError.text = text
     }
 
-    private fun showLoadingScreen(visible: Boolean) = runOnUiThread {
-//        loadingScreen.visibility = if (visible) View.VISIBLE else View.GONE
+    private fun showProgressBar(visible: Boolean) = runOnUiThread {
+        progressBar.visibility = if (visible) View.VISIBLE else View.GONE
     }
+
+
+
 }
+
+
