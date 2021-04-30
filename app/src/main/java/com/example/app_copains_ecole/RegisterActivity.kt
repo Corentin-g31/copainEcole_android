@@ -47,7 +47,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         when (v) {
             btnValidate -> {
                 Log.i("tag_i", "onClick: btnValidate")
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MapsActivity::class.java)
                 val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}", group_users = 1)
 
                 // ProgressBar le temps du register
@@ -56,10 +56,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 // Lance un thread pour ne pas bloquer le thread graphique
                 thread {
                     try {
-                        val registerUser = WsUtils.register(user)
-                        intent.putExtra("user_id", "$registerUser")
+                        WsUtils.register(user)
+                        intent.putExtra("user", user)
                         startActivity(intent)
-                        println(registerUser)
+                        println("Register OK : " + user.pseudo)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Log.w("tag_w", "${e.message}")

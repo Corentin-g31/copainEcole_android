@@ -53,12 +53,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             btnRegister -> {
                 Log.i("tag_i", "onClick: btnRegister")
                 startActivity(Intent(this, RegisterActivity::class.java))
-                val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
+                //val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
 
             }
             btnFind -> {
                 Log.i("tag_i", "onClick: btnFind")
                 startActivity(Intent(this, MapsActivity::class.java))
+                val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
             }
             btnLogin -> {
                 Log.i("tag_i", "onClick: btnLogin")
@@ -71,10 +72,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 // Lance un thread pour ne pas bloquer le thread graphique
                 thread {
                     try {
-                        val loginUser = WsUtils.login(user)
-                        intent.putExtra("user_id", "$loginUser")
+                        WsUtils.login(user)
+                        intent.putExtra("user", user)
                         startActivity(intent)
-                        println("ok" + loginUser)
+                        println("Login OK : " + user.pseudo)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Log.w("tag_w", "${e.message}")
