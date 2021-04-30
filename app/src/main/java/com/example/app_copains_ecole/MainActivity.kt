@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import com.example.app_copains_ecole.model.UserBean
 import com.example.app_copains_ecole.utils.WsUtils
 import kotlin.concurrent.thread
@@ -53,12 +50,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             btnRegister -> {
                 Log.i("tag_i", "onClick: btnRegister")
                 startActivity(Intent(this, RegisterActivity::class.java))
-                val user = UserBean(pseudo = "${txtPseudo.text}", password = "${txtPassword.text}")
-
             }
             btnFind -> {
                 Log.i("tag_i", "onClick: btnFind")
-                startActivity(Intent(this, MapsActivity::class.java))
+                Toast.makeText(this, "Vous devez vous connecter", Toast.LENGTH_SHORT).show()
             }
             btnLogin -> {
                 Log.i("tag_i", "onClick: btnLogin")
@@ -71,15 +66,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 // Lance un thread pour ne pas bloquer le thread graphique
                 thread {
                     try {
-                        val loginUser = WsUtils.login(user)
-                        intent.putExtra("user_id", "$loginUser")
+                        WsUtils.login(user)
+                        intent.putExtra("user", user)
                         startActivity(intent)
-                        println("ok" + loginUser)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Log.w("tag_w", "${e.message}")
                         setErrorOnUiThread(e.message)
                     }
+                    showProgressBar(false)
                 }
 
             }
@@ -98,6 +93,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             tvError.visibility = View.VISIBLE
         }
         tvError.text = text
+
+        // ProgressBar gone anyway
+        showProgressBar(false)
     }
 
     private fun showProgressBar(visible: Boolean) = runOnUiThread {

@@ -115,7 +115,7 @@
             android:layout_weight="10"
             android:ems="10"
             android:hint="Saisir texte ici"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
     </LinearLayout>
 
