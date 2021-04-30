@@ -87,7 +87,7 @@
             android:layout_weight="10"
             android:ems="10"
             android:hint="Saisir texte ici"
-            android:inputType="textPersonName" />
+            android:inputType="textPassword" />
 
     </LinearLayout>
 
@@ -114,6 +114,7 @@
             android:layout_weight="10"
             android:ems="10"
             android:hint="1"
+            android:enabled="false"
             android:inputType="textPersonName" />
 
     </LinearLayout>

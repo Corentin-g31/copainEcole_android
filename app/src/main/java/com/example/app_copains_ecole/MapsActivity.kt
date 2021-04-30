@@ -117,10 +117,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
         mMap = googleMap
 
         thread {
-            users.clear()
-            users.addAll(WsUtils.getUsers())
-            WsUtils.getUsers().forEach { Log.i("tag_i", "${it.pseudo}") }
-            refreshData()
+            while (true) {
+                users.clear()
+                users.addAll(WsUtils.getUsers())
+                WsUtils.getUsers().forEach { Log.i("tag_i", "${it.pseudo}") }
+                refreshData()
+                Thread.sleep(REFRESH_DATA)
+            }
         }
     }
 
@@ -142,11 +145,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
                 val latLngBounds = LatLngBounds.Builder()
                 users.forEach{
                     //TODO afficher tous les marqueurs
+                    latLngBounds.include(userCoordsToLatLng(it))
                     val markerOptions = MarkerOptions()
-                    markerOptions.position(it.latitude?.let { it1 -> it.longitude?.let { it2 -> LatLng(it1, it2) } })
+                    markerOptions.position(userCoordsToLatLng(it))
                     markerOptions.title(it.pseudo)
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                    mMap.addMarker(markerOptions)
+                    val iconColor = if (it.pseudo.equals(userConnected.pseudo)) BitmapDescriptorFactory.HUE_GREEN else GROUP1_COLOR
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(iconColor))
+                    mMap.addMarker(markerOptions).tag = it
                 }
 
                 // Zoom sur le groupe de markers
@@ -161,6 +166,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
     }
 
     fun Location.toLatLng() = LatLng(this.latitude,this.longitude)
+
+    fun userCoordsToLatLng(u: UserBean) = u.latitude?.let { u.longitude?.let { it1 -> LatLng(it, it1) } }
 
     fun getLocation(): Location? {
         //Si permission je sauvegarde coordonnées + j'affiche
@@ -182,7 +189,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, View.OnClickListen
             }
             switch1 -> {
                 Log.i("tag_i", "onClick: switch1, state : ${switch1.isChecked}")
-                // Todo to ameliorate
+                // aplly in refreshData()
             }
             switch2 -> {
                 Log.i("tag_i", "onClick: switch2, state : ${switch2.isChecked}")
